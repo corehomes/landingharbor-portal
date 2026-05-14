@@ -21,14 +21,27 @@ export default async function handler(req) {
     return new Response(JSON.stringify({ error: 'Email and password required' }), { status: 400 })
   }
 
-  const formula = `AND({Email}="${email.toLowerCase()}", {Password}="${password}")`
+  const allData = await airtableGet('Users', '1=1')
+  console.log('All users count:', allData.records?.length)
+  console.log('All users fields:', JSON.stringify(allData.records?.map(r => r.fields)))
+
+  const formula = `LOWER({Email})="${email.toLowerCase()}"`
+  console.log('Formula:', formula)
   const data = await airtableGet('Users', formula)
+  console.log('Matched records:', data.records?.length)
+  console.log('Airtable error:', data.error)
 
   if (!data.records || data.records.length === 0) {
     return new Response(JSON.stringify({ error: 'Invalid email or password' }), { status: 401 })
   }
 
   const record = data.records[0]
+
+  if (record.fields['Password'] !== password) {
+    console.log('Password mismatch. Stored:', record.fields['Password'], 'Provided:', password)
+    return new Response(JSON.stringify({ error: 'Invalid email or password' }), { status: 401 })
+  }
+
   const user = {
     id: record.id,
     email: record.fields['Email'],
