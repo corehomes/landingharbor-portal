@@ -21,10 +21,12 @@ export default async function handler(req) {
     return new Response(JSON.stringify({ error: 'Email and password required' }), { status: 400 })
   }
 
+  // First: get ALL users so we can see what's in the table
   const allData = await airtableGet('Users', '1=1')
   console.log('All users count:', allData.records?.length)
   console.log('All users fields:', JSON.stringify(allData.records?.map(r => r.fields)))
 
+  // Then try email match
   const formula = `LOWER({Email})="${email.toLowerCase()}"`
   console.log('Formula:', formula)
   const data = await airtableGet('Users', formula)

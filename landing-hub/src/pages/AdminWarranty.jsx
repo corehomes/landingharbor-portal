@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import { api } from '../lib/api'
 import './Admin.css'
 
-const STATUSES = ['Submitted', 'Under Review', 'Resolved', 'Denied']
-const FILTERS = ['All', 'Submitted', 'Under Review', 'Resolved', 'Denied']
+const STATUSES = ['Submitted to Property Manager', 'Submitted to Manufacturer', 'Repair Scheduled', 'Repair Completed']
+const FILTERS = ['All', 'Submitted to Property Manager', 'Submitted to Manufacturer', 'Repair Scheduled', 'Repair Completed']
 
 export default function AdminWarranty() {
   const [records, setRecords] = useState([])
@@ -110,6 +110,11 @@ export default function AdminWarranty() {
 }
 
 function statusClass(status) {
-  const map = { 'Submitted': 'badge-submitted', 'Under Review': 'badge-review', 'Resolved': 'badge-approved', 'Denied': 'badge-denied' }
+  const map = {
+    'Submitted to Property Manager': 'badge-submitted',
+    'Submitted to Manufacturer': 'badge-review',
+    'Repair Scheduled': 'badge-pending',
+    'Repair Completed': 'badge-approved'
+  }
   return map[status] || 'badge-pending'
 }

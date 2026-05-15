@@ -38,7 +38,7 @@ export default async function handler(req) {
         'Site Number': body.siteNumber,
         'Serial / VIN': body.serialVin,
         'Issue Description': body.issueDescription,
-        'Status': 'Submitted',
+        'Status': 'Submitted to Property Manager',
         'Submission Date': new Date().toISOString().split('T')[0]
       }
     }

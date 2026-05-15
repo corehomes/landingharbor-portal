@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '../lib/AuthContext'
 import { api } from '../lib/api'
 import { Send, CheckCircle, Mail, AlertTriangle } from 'lucide-react'
+import { useProperties } from '../hooks/useProperties'
 import './FormPage.css'
 
-const PROPERTIES = ['Live Oak Landing', 'Pigeon Forge Landing', "Catherine's Landing", 'Gulf Shores', 'Sandusky']
 const IMPROVEMENT_TYPES = [
   'Exterior Paint/Finish',
   'Deck or Porch Addition',
@@ -17,6 +17,7 @@ const IMPROVEMENT_TYPES = [
 
 export default function Improvement() {
   const { user } = useAuth()
+  const { properties } = useProperties()
   const [form, setForm] = useState({
     lastName: '', property: '', siteNumber: '', phone: '',
     improvementTypes: [],
@@ -104,9 +105,8 @@ export default function Improvement() {
 
   const statusBadge = (status) => {
     const map = {
-      'Pending Review': 'badge-pending',
-      'Under PM Review': 'badge-review',
-      'Under President Review': 'badge-review',
+      'Submitted': 'badge-submitted',
+      'Under Review': 'badge-review',
       'Approved': 'badge-approved',
       'Denied': 'badge-denied',
     }
@@ -151,7 +151,7 @@ export default function Improvement() {
               <label>Property <span className="required">*</span></label>
               <select value={form.property} onChange={e => set('property', e.target.value)} required>
                 <option value="">Select property…</option>
-                {PROPERTIES.map(p => <option key={p} value={p}>{p}</option>)}
+                {properties.map(p => <option key={p} value={p}>{p}</option>)}
               </select>
             </div>
             <div className="form-group">
@@ -255,7 +255,7 @@ export default function Improvement() {
           <h2>Section 4 — Owner Acknowledgement</h2>
           <div className="form-notice" style={{ marginBottom: 16 }}>
             <AlertTriangle size={16} />
-            <span>No work may begin until you receive a written approval confirmation from both the property manager and the president. Any unauthorized work may be required to be removed at your expense.</span>
+            <span>No work may begin until you receive written approval. Any unauthorized work may be required to be removed at your expense.</span>
           </div>
           <div className="form-group" style={{ marginBottom: 16 }}>
             <label>Full Name (Electronic Signature) <span className="required">*</span></label>
@@ -266,7 +266,7 @@ export default function Improvement() {
               required
             />
             <p style={{ fontSize: '0.78rem', color: 'var(--text-light)', marginTop: 6 }}>
-              By typing your name, you confirm all information is accurate and that no work may begin until written approval is granted.
+              By typing your name, you confirm all information is accurate and that no work may begin until written approval is received.
             </p>
           </div>
           <div className="form-group">
@@ -292,13 +292,13 @@ export default function Improvement() {
               <div key={r.id} className="submission-card">
                 <div className="submission-card-header">
                   <h4>Submitted {r.fields['Submission Date']}</h4>
-                  <span className={statusBadge(r.fields['Approval Status'])}>{r.fields['Approval Status'] || 'Pending'}</span>
+                  <span className={statusBadge(r.fields['Approval Status'])}>{r.fields['Approval Status'] || 'Submitted'}</span>
                 </div>
                 <p><strong>Site:</strong> {r.fields['Property']} — #{r.fields['Site Number']}</p>
                 <p><strong>Type:</strong> {r.fields['Type of Improvement']}</p>
                 {r.fields['Admin Notes'] && (
-                  <div style={{ marginTop: 10, padding: '10px 14px', background: '#f0f7f2', borderRadius: 6, fontSize: '0.85rem' }}>
-                    <strong>Management Note:</strong> {r.fields['Admin Notes']}
+                  <div style={{ marginTop: 10, padding: '10px 14px', background: r.fields['Approval Status'] === 'Denied' ? '#fdf2f2' : '#f0f7f2', borderRadius: 6, fontSize: '0.85rem', borderLeft: `3px solid ${r.fields['Approval Status'] === 'Denied' ? 'var(--error)' : 'var(--pine)'}` }}>
+                    <strong>{r.fields['Approval Status'] === 'Denied' ? 'Reason for Denial:' : 'Management Note:'}</strong> {r.fields['Admin Notes']}
                   </div>
                 )}
               </div>

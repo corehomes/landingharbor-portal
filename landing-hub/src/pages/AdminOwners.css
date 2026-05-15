@@ -1,0 +1,87 @@
+.owner-search {
+  padding: 9px 16px;
+  border: 1.5px solid var(--cream-dark);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  min-width: 260px;
+  font-family: inherit;
+  outline: none;
+}
+.owner-search:focus { border-color: var(--pine); }
+
+.bulk-email-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--pine);
+  color: var(--white);
+  padding: 12px 20px;
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.owners-table {
+  border: 1.5px solid var(--cream-dark);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--white);
+}
+
+.owners-table-head {
+  display: grid;
+  grid-template-columns: 40px 1.5fr 1.2fr 1.5fr 110px 100px;
+  gap: 12px;
+  padding: 12px 20px;
+  background: var(--cream);
+  border-bottom: 1.5px solid var(--cream-dark);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--pine);
+  align-items: center;
+}
+
+.owners-table-row {
+  display: grid;
+  grid-template-columns: 40px 1.5fr 1.2fr 1.5fr 110px 100px;
+  gap: 12px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--cream-dark);
+  align-items: center;
+  transition: background 0.15s;
+  font-size: 0.88rem;
+}
+.owners-table-row:last-child { border-bottom: none; }
+.owners-table-row:hover { background: #f8fdf9; }
+.owners-table-row.selected { background: #e8f5e9; }
+
+.owner-name { font-weight: 600; color: var(--text-dark); }
+.owner-coowner { font-size: 0.8rem; color: var(--text-light); margin-top: 2px; }
+.owner-property { font-weight: 500; color: var(--pine); }
+.owner-site { font-size: 0.8rem; color: var(--text-light); }
+
+.owner-email-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border: 1.5px solid var(--pine);
+  border-radius: 6px;
+  background: none;
+  color: var(--pine);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.owner-email-btn:hover { background: var(--pine); color: var(--white); }
+
+@media (max-width: 900px) {
+  .owners-table-head, .owners-table-row {
+    grid-template-columns: 40px 1fr 1fr 80px;
+  }
+  .owners-col-contact, .owners-col-bgcheck { display: none; }
+}

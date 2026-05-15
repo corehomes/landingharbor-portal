@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../lib/AuthContext'
 import { api } from '../lib/api'
-import { Wrench, Hammer, ShieldCheck, User, ArrowRight, AlertCircle } from 'lucide-react'
+import { Wrench, Hammer, ShieldCheck, User, ArrowRight } from 'lucide-react'
 import './Dashboard.css'
 
 const PROPERTIES = {
@@ -106,10 +106,7 @@ export default function Dashboard() {
             {profile?.['Site Number'] && <span className="meta-chip">Site #{profile['Site Number']}</span>}
           </div>
         </div>
-        <div className="dashboard-hero-notice">
-          <AlertCircle size={16} />
-          <span>Remember: email photos to <strong>jlacour@rvcoutdoors.com</strong> with warranty submissions, and plans/contractor docs with improvement requests.</span>
-        </div>
+
       </div>
 
       {!profile && (

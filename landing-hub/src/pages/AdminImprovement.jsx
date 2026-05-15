@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import { api } from '../lib/api'
 import './Admin.css'
 
-const STATUSES = ['Pending Review', 'Under PM Review', 'Under President Review', 'Approved', 'Denied']
-const FILTERS = ['All', 'Pending Review', 'Under PM Review', 'Under President Review', 'Approved', 'Denied']
+const STATUSES = ['Submitted', 'Under Review', 'Approved', 'Denied']
+const FILTERS = ['All', 'Submitted', 'Under Review', 'Approved', 'Denied']
 
 export default function AdminImprovement() {
   const [records, setRecords] = useState([])
@@ -107,7 +107,7 @@ export default function AdminImprovement() {
                   </select>
                   <input
                     className="admin-notes-input"
-                    placeholder="Add management note (visible to owner)…"
+                    placeholder={status === 'Denied' ? 'Enter reason for denial (visible to owner)…' : 'Add management note (visible to owner)…'}
                     value={notes}
                     onChange={e => setUpdate(r.id, 'notes', e.target.value)}
                   />
@@ -130,9 +130,8 @@ export default function AdminImprovement() {
 
 function statusClass(status) {
   const map = {
-    'Pending Review': 'badge-pending',
-    'Under PM Review': 'badge-review',
-    'Under President Review': 'badge-review',
+    'Submitted': 'badge-submitted',
+    'Under Review': 'badge-review',
     'Approved': 'badge-approved',
     'Denied': 'badge-denied'
   }

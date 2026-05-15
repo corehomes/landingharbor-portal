@@ -12,6 +12,7 @@ import AdminWarranty from './pages/AdminWarranty'
 import AdminImprovement from './pages/AdminImprovement'
 import AdminInsurance from './pages/AdminInsurance'
 import AdminOwners from './pages/AdminOwners'
+import AdminAddOwner from './pages/AdminAddOwner'
 
 function PrivateRoute({ children, adminOnly }) {
   const { user, loading } = useAuth()
@@ -88,6 +89,11 @@ export default function App() {
           <Route path="/admin/owners" element={
             <PrivateRoute adminOnly>
               <AppLayout><AdminOwners /></AppLayout>
+            </PrivateRoute>
+          } />
+          <Route path="/admin/owners/new" element={
+            <PrivateRoute adminOnly>
+              <AppLayout><AdminAddOwner /></AppLayout>
             </PrivateRoute>
           } />
 

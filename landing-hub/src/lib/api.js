@@ -11,6 +11,9 @@ async function call(path, options = {}) {
 }
 
 export const api = {
+  // Properties & Property Managers
+  getProperties: () => call('/properties'),
+
   // Auth
   login: (email, password) =>
     call('/auth', { method: 'POST', body: JSON.stringify({ email, password }) }),
@@ -18,6 +21,10 @@ export const api = {
   // Owner Profile
   getProfile: (email) => call(`/profile?email=${encodeURIComponent(email)}`),
   saveProfile: (data) => call('/profile', { method: 'POST', body: JSON.stringify(data) }),
+  getAllOwnerProfiles: () => call('/profile?all=true'),
+
+  // Users (admin)
+  createUser: (data) => call('/users', { method: 'POST', body: JSON.stringify(data) }),
 
   // Warranty Requests
   getWarranty: (email) => call(`/warranty?email=${encodeURIComponent(email)}`),

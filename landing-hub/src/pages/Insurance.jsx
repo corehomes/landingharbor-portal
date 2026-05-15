@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../lib/AuthContext'
 import { api } from '../lib/api'
-import { Save, CheckCircle, ShieldCheck, Mail, ExternalLink } from 'lucide-react'
+import { Save, CheckCircle, ShieldCheck } from 'lucide-react'
 import './FormPage.css'
 
 export default function Insurance() {
   const { user } = useAuth()
-  const [form, setForm] = useState({ provider: '', docLink: '', expiration: '' })
+  const [form, setForm] = useState({ provider: '', policyNumber: '', expiration: '' })
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [success, setSuccess] = useState(false)
@@ -17,7 +17,7 @@ export default function Insurance() {
       if (insurance) {
         setForm({
           provider: insurance.provider || '',
-          docLink: insurance.docLink || '',
+          policyNumber: insurance.policyNumber || '',
           expiration: insurance.expiration || ''
         })
       }
@@ -47,19 +47,16 @@ export default function Insurance() {
     <div className="form-page">
       <div className="form-page-header">
         <h1>Insurance Information</h1>
-        <p>Keep your current insurance documentation on file with management.</p>
+        <p>Keep your current insurance information on file with management.</p>
       </div>
 
       <div className="card" style={{ display: 'flex', gap: 20, alignItems: 'flex-start', marginBottom: 24, background: '#e8f5e9', border: '1.5px solid #a5d6a7' }}>
         <ShieldCheck size={32} color="var(--pine)" style={{ flexShrink: 0, marginTop: 4 }} />
         <div>
-          <h3 style={{ fontFamily: 'Playfair Display', color: 'var(--pine)', marginBottom: 6, fontSize: '1rem' }}>How Insurance Documentation Works</h3>
+          <h3 style={{ fontFamily: 'Playfair Display', color: 'var(--pine)', marginBottom: 6, fontSize: '1rem' }}>Insurance Requirement</h3>
           <p style={{ fontSize: '0.88rem', color: 'var(--text-mid)', lineHeight: 1.6 }}>
-            Email a copy of your current insurance certificate to <strong>jlacour@rvcoutdoors.com</strong>. Once management has saved it to your shared drive folder, they will provide you with the document link to store below. Keep your expiration date current so you receive renewal reminders.
+            Please keep your insurance information current. Email a copy of your declaration page to <strong>jen_lacour@equitylifestyle.com</strong> and be sure to add your property as an additional insured on the policy.
           </p>
-          <a href="mailto:jlacour@rvcoutdoors.com?subject=Insurance Certificate" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 12, color: 'var(--pine)', fontWeight: 600, fontSize: '0.88rem' }}>
-            <Mail size={14} /> Email Insurance Doc
-          </a>
         </div>
       </div>
 
@@ -79,29 +76,15 @@ export default function Insurance() {
                 required
               />
             </div>
-
-            <div className="form-group form-col-2">
-              <label>Document Link (Shared Drive)</label>
+            <div className="form-group">
+              <label>Policy Number <span className="required">*</span></label>
               <input
-                type="url"
-                value={form.docLink}
-                onChange={e => set('docLink', e.target.value)}
-                placeholder="https://drive.google.com/... (provided by management)"
+                value={form.policyNumber}
+                onChange={e => set('policyNumber', e.target.value)}
+                placeholder="e.g. POL-123456789"
+                required
               />
-              <p style={{ fontSize: '0.78rem', color: 'var(--text-light)', marginTop: 4 }}>
-                This link will be provided by management after they receive and file your emailed certificate.
-              </p>
             </div>
-
-            {form.docLink && (
-              <div className="form-col-2" style={{ marginBottom: 4 }}>
-                <a href={form.docLink} target="_blank" rel="noopener noreferrer"
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--pine)', fontWeight: 600, fontSize: '0.88rem' }}>
-                  <ExternalLink size={14} /> View Current Document
-                </a>
-              </div>
-            )}
-
             <div className="form-group">
               <label>Policy Expiration Date <span className="required">*</span></label>
               <input

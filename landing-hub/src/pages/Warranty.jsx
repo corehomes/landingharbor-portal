@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../lib/AuthContext'
 import { api } from '../lib/api'
-import { Send, CheckCircle, AlertTriangle, Mail } from 'lucide-react'
+import { Send, CheckCircle, Mail } from 'lucide-react'
+import { useProperties } from '../hooks/useProperties'
 import './FormPage.css'
-
-const PROPERTIES = ['Live Oak Landing', 'Pigeon Forge Landing', "Catherine's Landing", 'Gulf Shores']
 
 export default function Warranty() {
   const { user } = useAuth()
+  const { properties } = useProperties()
   const [form, setForm] = useState({
     firstName: '', lastName: '', phone: '', property: '', siteNumber: '',
     serialVin: '', issueDescription: ''
@@ -64,10 +64,10 @@ export default function Warranty() {
 
   const statusBadge = (status) => {
     const map = {
-      'Submitted': 'badge-submitted',
-      'Under Review': 'badge-review',
-      'Resolved': 'badge-approved',
-      'Denied': 'badge-denied',
+      'Submitted to Property Manager': 'badge-submitted',
+      'Submitted to Manufacturer': 'badge-review',
+      'Repair Scheduled': 'badge-pending',
+      'Repair Completed': 'badge-approved',
     }
     return `badge ${map[status] || 'badge-pending'}`
   }
@@ -83,13 +83,13 @@ export default function Warranty() {
 
       <div className="form-notice" style={{ marginBottom: 20 }}>
         <Mail size={18} />
-        <span><strong>Important:</strong> After submitting, please email any supporting photos to <strong>jlacour@rvcoutdoors.com</strong>. Reference your site number in the subject line.</span>
+        <span><strong>Important:</strong> After submitting, please email any supporting photos to <strong>jen_lacour@equitylifestyle.com</strong>. Reference your site number in the subject line.</span>
       </div>
 
       <form onSubmit={handleSubmit} className="form-sections">
         {success && (
           <div className="alert alert-success">
-            <CheckCircle size={16} /> Warranty request submitted! Don't forget to email photos to jlacour@rvcoutdoors.com.
+            <CheckCircle size={16} /> Warranty request submitted! Don't forget to email photos to jen_lacour@equitylifestyle.com.
           </div>
         )}
         {error && <div className="alert alert-error">{error}</div>}
@@ -117,7 +117,7 @@ export default function Warranty() {
               <label>Property <span className="required">*</span></label>
               <select value={form.property} onChange={e => set('property', e.target.value)} required>
                 <option value="">Select property…</option>
-                {PROPERTIES.map(p => <option key={p} value={p}>{p}</option>)}
+                {properties.map(p => <option key={p} value={p}>{p}</option>)}
               </select>
             </div>
             <div className="form-group">
@@ -165,7 +165,7 @@ export default function Warranty() {
               <div key={r.id} className="submission-card">
                 <div className="submission-card-header">
                   <h4>Submitted {r.fields['Submission Date']}</h4>
-                  <span className={statusBadge(r.fields['Status'])}>{r.fields['Status'] || 'Submitted'}</span>
+                  <span className={statusBadge(r.fields['Status'])}>{r.fields['Status'] || 'Submitted to Property Manager'}</span>
                 </div>
                 <p><strong>Site:</strong> {r.fields['Property']} — #{r.fields['Site Number']}</p>
                 <p style={{ marginTop: 8, whiteSpace: 'pre-wrap', fontSize: '0.85rem' }}>
